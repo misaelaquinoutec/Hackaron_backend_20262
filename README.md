@@ -917,6 +917,7 @@ Todo lo que no sea `/auth/**` exige `Authorization: Bearer <token>`.
 
 
 
+
 **Response paginado (200):**
 ```json
 {
