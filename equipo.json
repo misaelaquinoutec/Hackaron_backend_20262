@@ -1,8 +1,8 @@
 {
   "equipo": "G00",
   "integrantes": [
-    { "nombre": "Nombre Apellido", "codigo": "CODIGO UTEC" },
-    { "nombre": "Nombre Apellido", "codigo": "CODIGO UTEC" },
-    { "nombre": "Nombre Apellido", "codigo": "CODIGO UTEC" }
+    { "nombre": "Misael Osvaldo Aquino Hidalgo", "codigo": "202510626" },
+    { "nombre": "Juan Diego Lama Flor", "codigo": "202410401" },
+    { "nombre": "Adrian Omar Cespedes Llanos", "codigo": "202510675" }
   ]
 }
