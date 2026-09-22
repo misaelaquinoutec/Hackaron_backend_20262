@@ -12,6 +12,7 @@ public class RealityLog {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @ManyToOne(optional = false)
     @JoinColumn(name = "decision_id")
     private Decision decision;

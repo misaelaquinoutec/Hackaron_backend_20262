@@ -39,7 +39,11 @@ public class DecisionEventListener {
         RealityLog log = new RealityLog();
         log.setDecision(decision);
         log.setRecipientEmail(decision.getPlaythrough().getUser().getEmail());
-        log.setSubject("Tuckersoft Reality Report - " + decision.getPlaythrough().getPlayerTag());
+        String subject = String.format("[TUCKERSOFT] %s en %s | Impacto %s", 
+            decision.getBranchType(), 
+            decision.getPlaythrough().getPlayerTag(), 
+            decision.getImpactLevel());
+        log.setSubject(subject);
 
         try {
             if ("MAIL_FAILURE".equals(event.getSimulateHeader())) {
@@ -49,7 +53,16 @@ public class DecisionEventListener {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setTo(log.getRecipientEmail());
             message.setSubject(log.getSubject());
-            message.setText("Branch resolved: " + decision.getResolvedNodeCode());
+            
+            String text = String.format(
+                "Decision #%d\nPlayer: %s\nBranch: %s\nInput: %s\n",
+                decision.getId(),
+                decision.getPlaythrough().getPlayerTag(),
+                decision.getBranchType(),
+                decision.getRawInput()
+            );
+            message.setText(text);
+            
             mailSender.send(message);
 
             log.setLogStatus("SENT");
