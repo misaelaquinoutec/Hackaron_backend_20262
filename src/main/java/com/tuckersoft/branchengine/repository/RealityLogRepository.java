@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RealityLogRepository extends JpaRepository<RealityLog, Long> {
+    java.util.List<RealityLog> findByDecisionId(Long decisionId);
 }

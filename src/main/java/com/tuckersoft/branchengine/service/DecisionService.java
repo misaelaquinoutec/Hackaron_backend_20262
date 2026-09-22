@@ -20,17 +20,24 @@ import java.text.Normalizer;
 public class DecisionService {
 
     private final DecisionRepository decisionRepository;
-    private final PlaythroughRepository playthroughRepository;
     private final StoryNodeRepository nodeRepository;
+    private final PlaythroughRepository playthroughRepository;
     private final UserRepository userRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final com.tuckersoft.branchengine.repository.RealityLogRepository realityLogRepository;
 
-    public DecisionService(DecisionRepository decisionRepository, PlaythroughRepository playthroughRepository, StoryNodeRepository nodeRepository, UserRepository userRepository, ApplicationEventPublisher eventPublisher) {
+    public DecisionService(DecisionRepository decisionRepository,
+                           StoryNodeRepository nodeRepository,
+                           PlaythroughRepository playthroughRepository,
+                           UserRepository userRepository,
+                           ApplicationEventPublisher eventPublisher,
+                           com.tuckersoft.branchengine.repository.RealityLogRepository realityLogRepository) {
         this.decisionRepository = decisionRepository;
-        this.playthroughRepository = playthroughRepository;
         this.nodeRepository = nodeRepository;
+        this.playthroughRepository = playthroughRepository;
         this.userRepository = userRepository;
         this.eventPublisher = eventPublisher;
+        this.realityLogRepository = realityLogRepository;
     }
 
     @Transactional
@@ -157,5 +164,15 @@ public class DecisionService {
             
             return cb.and(predicates.toArray(new jakarta.persistence.criteria.Predicate[0]));
         }, pageable).map(com.tuckersoft.branchengine.dto.DecisionDto::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Decision getDecision(Long id) {
+        return decisionRepository.findById(id).orElseThrow(() -> new RuntimeException("Decision not found"));
+    }
+
+    @Transactional(readOnly = true)
+    public java.util.List<com.tuckersoft.branchengine.domain.RealityLog> getRealityLogs(Long decisionId) {
+        return realityLogRepository.findByDecisionId(decisionId);
     }
 }

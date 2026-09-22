@@ -42,4 +42,15 @@ public class DecisionController {
             "size", page.getSize()
         ));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<com.tuckersoft.branchengine.dto.DecisionDto> getDecision(@PathVariable Long id) {
+        com.tuckersoft.branchengine.domain.Decision decision = decisionService.getDecision(id);
+        return ResponseEntity.ok(new com.tuckersoft.branchengine.dto.DecisionDto(decision));
+    }
+
+    @GetMapping("/{id}/reality-logs")
+    public ResponseEntity<java.util.List<com.tuckersoft.branchengine.domain.RealityLog>> getRealityLogs(@PathVariable Long id) {
+        return ResponseEntity.ok(decisionService.getRealityLogs(id));
+    }
 }
