@@ -31,4 +31,14 @@ public class PlaythroughController {
     public ResponseEntity<List<PlaythroughDto>> getPlaythroughs(Authentication authentication) {
         return ResponseEntity.ok(playthroughService.getPlaythroughs(authentication.getName()));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PlaythroughDto> getPlaythrough(@PathVariable Long id, Authentication authentication) {
+        return ResponseEntity.ok(playthroughService.getPlaythrough(id, authentication.getName()));
+    }
+
+    @GetMapping("/{id}/path")
+    public ResponseEntity<?> getPlaythroughPath(@PathVariable Long id, Authentication authentication) {
+        return ResponseEntity.ok(playthroughService.getPlaythroughPath(id, authentication.getName()));
+    }
 }

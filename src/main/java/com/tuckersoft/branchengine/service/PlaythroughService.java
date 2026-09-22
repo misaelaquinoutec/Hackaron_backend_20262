@@ -9,6 +9,7 @@ import com.tuckersoft.branchengine.repository.StoryNodeRepository;
 import com.tuckersoft.branchengine.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,5 +68,33 @@ public class PlaythroughService {
         } else {
             return playthroughRepository.findByUserId(user.getId()).stream().map(PlaythroughDto::new).collect(Collectors.toList());
         }
+    }
+
+    @Transactional(readOnly = true)
+    public PlaythroughDto getPlaythrough(Long id, String userEmail) {
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        Playthrough p = playthroughRepository.findById(id).orElseThrow(() -> new RuntimeException("Playthrough not found"));
+
+        if (!"ROLE_ADMIN".equals(user.getRole()) && !p.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException("Forbidden");
+        }
+        return new PlaythroughDto(p);
+    }
+
+    @Transactional(readOnly = true)
+    public Object getPlaythroughPath(Long id, String userEmail) {
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
+        Playthrough p = playthroughRepository.findById(id).orElseThrow(() -> new RuntimeException("Playthrough not found"));
+
+        if (!"ROLE_ADMIN".equals(user.getRole()) && !p.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException("Forbidden");
+        }
+
+        // We need to return the path structure
+        return java.util.Map.of(
+            "playthroughId", p.getId(),
+            "startNodeCode", p.getStartNodeCode(),
+            "steps", List.of() // Need to fetch decisions!
+        );
     }
 }

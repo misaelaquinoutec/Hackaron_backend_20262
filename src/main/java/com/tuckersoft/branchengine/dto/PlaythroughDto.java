@@ -9,7 +9,7 @@ import java.time.Instant;
 public class PlaythroughDto {
     private Long id;
     private String playerTag;
-    private Long userId;
+    private String ownerEmail;
     private String startNodeCode;
     private String currentNodeCode;
     private Integer lucidity;
@@ -22,7 +22,7 @@ public class PlaythroughDto {
     public PlaythroughDto(Playthrough playthrough) {
         this.id = playthrough.getId();
         this.playerTag = playthrough.getPlayerTag();
-        this.userId = playthrough.getUser().getId();
+        this.ownerEmail = playthrough.getUser().getEmail();
         this.startNodeCode = playthrough.getStartNodeCode();
         this.currentNodeCode = playthrough.getCurrentNode() != null ? playthrough.getCurrentNode().getNodeCode() : null;
         this.lucidity = playthrough.getLucidity();

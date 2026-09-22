@@ -16,18 +16,19 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException ex, WebRequest request) {
         String path = ((ServletWebRequest) request).getRequest().getRequestURI();
         HttpStatus status = HttpStatus.BAD_REQUEST;
+        String message = ex.getMessage() != null ? ex.getMessage() : "Internal Server Error";
         
-        if (ex.getMessage().contains("already in use") || ex.getMessage().contains("ya existe") || ex.getMessage().contains("NodeCode already in use")) {
+        if (message.contains("already in use") || message.contains("ya existe") || message.contains("NodeCode already in use")) {
             status = HttpStatus.CONFLICT;
-        } else if (ex.getMessage().contains("Invalid credentials")) {
+        } else if (message.contains("Invalid credentials")) {
             status = HttpStatus.UNAUTHORIZED;
-        } else if (ex.getMessage().contains("Partida finalizada")) {
+        } else if (message.contains("Partida finalizada")) {
             status = HttpStatus.CONFLICT;
-        } else if (ex.getMessage().contains("not found")) {
+        } else if (message.contains("not found")) {
             status = HttpStatus.NOT_FOUND;
         }
 
-        ErrorResponse errorResponse = new ErrorResponse(status.getReasonPhrase(), ex.getMessage(), path);
+        ErrorResponse errorResponse = new ErrorResponse(status.getReasonPhrase(), message, path);
         return new ResponseEntity<>(errorResponse, status);
     }
 

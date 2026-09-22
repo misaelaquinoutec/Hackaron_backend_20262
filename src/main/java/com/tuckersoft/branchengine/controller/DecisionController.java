@@ -18,12 +18,12 @@ public class DecisionController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createDecision(
+    public ResponseEntity<com.tuckersoft.branchengine.dto.DecisionDto> createDecision(
             @RequestBody DecisionRequest request,
             @RequestHeader(value = "X-Bandersnatch-Simulate", required = false) String simulateHeader,
             Authentication authentication) {
         
-        Object response = decisionService.processDecision(request, authentication.getName(), simulateHeader);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        com.tuckersoft.branchengine.domain.Decision decision = (com.tuckersoft.branchengine.domain.Decision) decisionService.processDecision(request, authentication.getName(), simulateHeader);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new com.tuckersoft.branchengine.dto.DecisionDto(decision));
     }
 }
