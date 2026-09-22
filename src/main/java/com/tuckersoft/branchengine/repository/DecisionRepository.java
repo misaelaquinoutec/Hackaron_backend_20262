@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DecisionRepository extends JpaRepository<Decision, Long> {
+public interface DecisionRepository extends JpaRepository<Decision, Long>, org.springframework.data.jpa.repository.JpaSpecificationExecutor<Decision> {
     List<Decision> findByPlaythroughIdOrderByIdAsc(Long playthroughId);
 }

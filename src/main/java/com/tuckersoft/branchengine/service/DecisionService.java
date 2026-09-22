@@ -137,4 +137,25 @@ public class DecisionService {
 
         return decision; // or a DTO
     }
+
+    @Transactional(readOnly = true)
+    public org.springframework.data.domain.Page<com.tuckersoft.branchengine.dto.DecisionDto> getDecisions(Long playthroughId, String branchType, org.springframework.data.domain.Pageable pageable, String userEmail) {
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("User not found"));
+
+        return decisionRepository.findAll((org.springframework.data.jpa.domain.Specification<Decision>) (root, query, cb) -> {
+            java.util.List<jakarta.persistence.criteria.Predicate> predicates = new java.util.ArrayList<>();
+            
+            if (!"ROLE_ADMIN".equals(user.getRole())) {
+                predicates.add(cb.equal(root.get("playthrough").get("user").get("id"), user.getId()));
+            }
+            if (playthroughId != null) {
+                predicates.add(cb.equal(root.get("playthrough").get("id"), playthroughId));
+            }
+            if (branchType != null) {
+                predicates.add(cb.equal(root.get("branchType"), branchType));
+            }
+            
+            return cb.and(predicates.toArray(new jakarta.persistence.criteria.Predicate[0]));
+        }, pageable).map(com.tuckersoft.branchengine.dto.DecisionDto::new);
+    }
 }

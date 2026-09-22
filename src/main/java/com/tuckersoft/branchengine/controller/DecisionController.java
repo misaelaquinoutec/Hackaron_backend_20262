@@ -26,4 +26,20 @@ public class DecisionController {
         com.tuckersoft.branchengine.domain.Decision decision = (com.tuckersoft.branchengine.domain.Decision) decisionService.processDecision(request, authentication.getName(), simulateHeader);
         return ResponseEntity.status(HttpStatus.CREATED).body(new com.tuckersoft.branchengine.dto.DecisionDto(decision));
     }
+
+    @GetMapping
+    public ResponseEntity<java.util.Map<String, Object>> getDecisions(
+            @RequestParam(required = false) Long playthroughId,
+            @RequestParam(required = false) String branchType,
+            org.springframework.data.domain.Pageable pageable,
+            Authentication authentication) {
+        org.springframework.data.domain.Page<com.tuckersoft.branchengine.dto.DecisionDto> page = decisionService.getDecisions(playthroughId, branchType, pageable, authentication.getName());
+        return ResponseEntity.ok(java.util.Map.of(
+            "content", page.getContent(),
+            "currentPage", page.getNumber(),
+            "totalPages", page.getTotalPages(),
+            "totalElements", page.getTotalElements(),
+            "size", page.getSize()
+        ));
+    }
 }
