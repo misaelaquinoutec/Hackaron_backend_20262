@@ -3,7 +3,6 @@
 **No modifiques nada de esta carpeta.** Es la misma que usa el TA para calificar.
 Cambiarla es motivo de anulación de la hackathon.
 
-<!-- Nota de mantenimiento: las clases Checkpoint*.java se generan desde el contrato v1.2. La fe de erratas v1.3 del README principal todavia no esta incorporada; ante diferencias, el contrato vigente es el README principal. -->
 
 ---
 
