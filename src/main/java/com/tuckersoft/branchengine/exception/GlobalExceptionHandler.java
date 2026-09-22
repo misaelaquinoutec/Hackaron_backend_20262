@@ -26,6 +26,8 @@ public class GlobalExceptionHandler {
             status = HttpStatus.CONFLICT;
         } else if (message.contains("not found")) {
             status = HttpStatus.NOT_FOUND;
+        } else if (message.contains("Forbidden")) {
+            status = HttpStatus.FORBIDDEN;
         }
 
         ErrorResponse errorResponse = new ErrorResponse(status.getReasonPhrase(), message, path);

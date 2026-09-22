@@ -17,6 +17,10 @@ public class DecisionDto {
     private String outcomeCode;
     private String resolvedNodeCode;
     private String status;
+    private Integer lucidity;
+    private Integer controlLevel;
+    private String playthroughStatus;
+    private String endingCode;
     private Instant createdAt;
     private Instant updatedAt;
 
@@ -31,6 +35,10 @@ public class DecisionDto {
         this.outcomeCode = decision.getOutcomeCode();
         this.resolvedNodeCode = decision.getResolvedNodeCode();
         this.status = decision.getStatus();
+        this.lucidity = decision.getPlaythrough().getLucidity();
+        this.controlLevel = decision.getPlaythrough().getControlLevel();
+        this.playthroughStatus = decision.getPlaythrough().getStatus();
+        this.endingCode = decision.getPlaythrough().getEndingCode();
         this.createdAt = decision.getCreatedAt();
         this.updatedAt = decision.getUpdatedAt();
     }

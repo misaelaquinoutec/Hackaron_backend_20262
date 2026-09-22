@@ -38,9 +38,7 @@ public class DecisionService {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Playthrough playthrough = playthroughRepository.findAll().stream()
-                .filter(p -> p.getPlayerTag().equals(request.getPlayerTag()))
-                .findFirst()
+        Playthrough playthrough = playthroughRepository.findById(request.getPlaythroughId())
                 .orElseThrow(() -> new RuntimeException("Playthrough not found"));
 
         if (!playthrough.getUser().getId().equals(user.getId())) {

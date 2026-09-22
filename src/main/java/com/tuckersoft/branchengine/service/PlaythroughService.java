@@ -20,11 +20,13 @@ public class PlaythroughService {
     private final PlaythroughRepository playthroughRepository;
     private final StoryNodeRepository nodeRepository;
     private final UserRepository userRepository;
+    private final com.tuckersoft.branchengine.repository.DecisionRepository decisionRepository;
 
-    public PlaythroughService(PlaythroughRepository playthroughRepository, StoryNodeRepository nodeRepository, UserRepository userRepository) {
+    public PlaythroughService(PlaythroughRepository playthroughRepository, StoryNodeRepository nodeRepository, UserRepository userRepository, com.tuckersoft.branchengine.repository.DecisionRepository decisionRepository) {
         this.playthroughRepository = playthroughRepository;
         this.nodeRepository = nodeRepository;
         this.userRepository = userRepository;
+        this.decisionRepository = decisionRepository;
     }
 
     @Transactional
@@ -90,11 +92,15 @@ public class PlaythroughService {
             throw new AccessDeniedException("Forbidden");
         }
 
+        List<com.tuckersoft.branchengine.dto.DecisionDto> steps = decisionRepository.findByPlaythroughIdOrderByIdAsc(id).stream()
+                .map(com.tuckersoft.branchengine.dto.DecisionDto::new)
+                .collect(Collectors.toList());
+
         // We need to return the path structure
         return java.util.Map.of(
             "playthroughId", p.getId(),
             "startNodeCode", p.getStartNodeCode(),
-            "steps", List.of() // Need to fetch decisions!
+            "steps", steps
         );
     }
 }

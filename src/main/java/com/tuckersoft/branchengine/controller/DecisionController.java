@@ -19,7 +19,7 @@ public class DecisionController {
 
     @PostMapping
     public ResponseEntity<com.tuckersoft.branchengine.dto.DecisionDto> createDecision(
-            @RequestBody DecisionRequest request,
+            @jakarta.validation.Valid @RequestBody DecisionRequest request,
             @RequestHeader(value = "X-Bandersnatch-Simulate", required = false) String simulateHeader,
             Authentication authentication) {
         
